@@ -6,7 +6,7 @@
     "cost": 0,
     "mass": 0,
     "budgetCap": 300,
-    "scienceTarget": 40,
+    "scienceTarget": 32,
     "priorityTags": ["Thermal", "Imaging"],
     "allowedOrbits": ["orbit_leo", "orbit_sso"],
     "flavor": "Monitor active wildfires and thermal hotspots from orbit to protect communities.",
