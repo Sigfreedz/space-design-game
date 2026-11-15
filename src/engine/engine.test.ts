@@ -10,12 +10,11 @@ import {
   computeScore,
 } from './engine.ts';
 import { LUNAR_BUILD, withOverrides } from './fixtures.ts';
-import { eventById } from '../data/index.ts';
+import { eventById, missions } from '../data/index.ts';
 
 describe('engine contract acceptance tests', () => {
   it('1. calculateBuild(LUNAR_BUILD): totals, limits, margins, tiers, and potential science match Section 14 exactly', () => {
     const result = calculateBuild(LUNAR_BUILD);
-
     expect(result.totals.cost).toBe(452);
     expect(result.limits.cost).toBe(480);
     expect(result.totals.mass).toBe(725);
@@ -29,7 +28,6 @@ describe('engine contract acceptance tests', () => {
     expect(result.totals.potentialScience).toBe(66);
     expect(result.dataThrottle).toBe(1);
     expect(result.contingencyAtLaunch).toBe(28);
-
     expect(result.margins.cost).toBeCloseTo(0.0583, 3);
     expect(result.margins.mass).toBeCloseTo(0.3095, 3);
     expect(result.margins.power).toBeCloseTo(0.3833, 3);
@@ -86,20 +84,35 @@ describe('engine contract acceptance tests', () => {
   });
 
   it('8. resolveEvent comms_blackout applies science multipliers on partial and fail', () => {
-    const state = createMissionState(LUNAR_BUILD, 'learning', 1);
+    // A Red data margin is needed for Comms Blackout to have both
+    // partial and fail outcomes on an unmodified d6. Small Antenna gives
+    // Lunar Ice Hunter 4 Mbps downlink vs 15 Mbps generated: Red margin (+0).
+    const weakCommsBuild = withOverrides(LUNAR_BUILD, { commsId: 'comms_small' });
     const commsBlackout = eventById['event_comms_blackout'];
-    const partialRes = resolveEvent(state, commsBlackout, []);
-    const failRes = resolveEvent(state, commsBlackout, []);
-    expect(
-      partialRes.result.effects.some(
-        (eff) => eff.type === 'science_multiplier' && eff.value === 0.5
-      )
-    ).toBe(true);
-    expect(
-      failRes.result.effects.some(
-        (eff) => eff.type === 'science_multiplier' && eff.value === 0
-      )
-    ).toBe(true);
+
+    // Independent deterministic seeds force different d6 outcomes.
+    // Seeds are for the current seeded engine implementation at Stage 4:
+    // 8 -> d6=3 (Partial), 1 -> d6=2 (Fail).
+    const partialState = createMissionState(weakCommsBuild, 'learning', 8);
+    partialState.stage = 4;
+    const failState = createMissionState(weakCommsBuild, 'learning', 1);
+    failState.stage = 4;
+
+    const partialRes = resolveEvent(partialState, commsBlackout, []);
+    const failRes = resolveEvent(failState, commsBlackout, []);
+
+    expect(partialRes.result.outcome).toBe('partial');
+    expect(partialRes.result.effects).toEqual(
+      expect.arrayContaining([expect.objectContaining({ type: 'science_multiplier', value: 0.5 })])
+    );
+    expect(failRes.result.outcome).toBe('fail');
+    expect(failRes.result.effects).toEqual(
+      expect.arrayContaining([expect.objectContaining({ type: 'science_multiplier', value: 0 })])
+    );
+
+    // Deterministic replay must still produce the same outcome.
+    const replay = resolveEvent(partialState, commsBlackout, []);
+    expect(replay.result).toEqual(partialRes.result);
   });
 
   it('9. Insertion loss when delta-v is below requirement causes mission lost', () => {
@@ -119,7 +132,6 @@ describe('engine contract acceptance tests', () => {
     const runB = runStage(stateB, []);
     const scoreA = computeScore(runA.state);
     const scoreB = computeScore(runB.state);
-
     expect(runA.state.eventsDrawn).toEqual(runB.state.eventsDrawn);
     expect(scoreA.total).toBe(scoreB.total);
   });
@@ -149,8 +161,44 @@ describe('engine contract acceptance tests', () => {
     const draw2 = drawEvent(draw1.state);
     const draw3 = drawEvent(draw2.state);
     const draw4 = drawEvent(draw3.state);
-
     const drawnIds = [draw1.event.id, draw2.event.id, draw3.event.id, draw4.event.id];
     expect(new Set(drawnIds).size).toBe(4);
+  });
+
+  // Approved v7.3 (P7 G1-G2) Launch Check regression tests.
+  it('13. LV-02 blocks a build with only one instrument', () => {
+    const result = validateBuild(withOverrides(LUNAR_BUILD, {
+      instrumentIds: ['instr_radar_sounder'],
+    }));
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.code === 'LV-02')).toBe(true);
+  });
+
+  it('14. LV-02 blocks a build without supports', () => {
+    const result = validateBuild(withOverrides(LUNAR_BUILD, { supportIds: [] }));
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.code === 'LV-02')).toBe(true);
+  });
+
+  it('15. LV-02 blocks a duplicate instrument card', () => {
+    const result = validateBuild(withOverrides(LUNAR_BUILD, {
+      instrumentIds: ['instr_radar_sounder', 'instr_radar_sounder'],
+    }));
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.code === 'LV-02')).toBe(true);
+  });
+
+  it('16. LV-02 blocks a duplicate support card', () => {
+    const result = validateBuild(withOverrides(LUNAR_BUILD, {
+      supportIds: ['support_rad_shield', 'support_rad_shield'],
+    }));
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.code === 'LV-02')).toBe(true);
+  });
+
+  it('17. Wildfire Watch science target is 32 (P7 G4)', () => {
+    const wildfire = missions.find((mission) => mission.id === 'mission_wildfire_watch');
+    expect(wildfire).toBeDefined();
+    expect(wildfire?.scienceTarget).toBe(32);
   });
 });
