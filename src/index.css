@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  /* PLACEHOLDER palette — UI/UX designer will finalize */
+  --c-mission: #d4a017;
+  --c-orbit: #3b82f6;
+  --c-rocket: #f97316;
+  --c-spacecraft: #14b8a6;
+  --c-instrument: #a855f7;
+  --c-event: #ec4899;
+  --c-tier-green: #22c55e;
+  --c-tier-yellow: #eab308;
+  --c-tier-red: #ef4444;
+  --c-bg: #0b1020;
+  --c-panel: #151b30;
+  --c-text: #e6ecff;
+}
+
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: 'Silkscreen', ui-monospace, monospace;
+  font-size: 16px;
+}
+img, canvas { image-rendering: pixelated; }
+
