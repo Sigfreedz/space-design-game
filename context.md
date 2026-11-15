@@ -49,7 +49,7 @@ Card types:
 
 ---
 
-# GAME MECHANICS (v7.2, owner: Game Mechanics & Logic — FROZEN after A1/A2 ack)
+# GAME MECHANICS (v7.3, owner: Game Mechanics & Logic — FROZEN after P7 G1–G4 approval)
 
 All numbers are starter values for balancing, simplified and fictional-but-plausible, labeled as such in-game (Section 19). Mechanics owns rules and data; Simulation owns the code (Section 15).
 
@@ -72,8 +72,8 @@ One run ≈ 10–15 minutes. Single-player.
 | Power | 1 | Solar or RTG |
 | Communications | 1 | Antenna / downlink |
 | Propulsion | 1 | Must meet the Orbit's minimum ΔV |
-| Instrument | 2–4 | Limited by Bus |
-| Support | 1–3 | Limited by Bus |
+| Instrument | 2–4 | Minimum 2; limited by Bus slots; no duplicate instrument cards (P7 G1–G2) |
+| Support | 1–3 | Minimum 1; limited by Bus slots; no duplicate support cards (P7 G1–G2) |
 
 ## 3. Resources and Rules
 **Four gauges:** Cost ($M) vs Mission cap; Mass (kg) vs Rocket capacity × Orbit Reach Factor; Power (W) generated (× Sun Factor, RTG exempt) vs total draw; Data (Mbps) generated vs Comms downlink × Orbit Signal Factor. Full formulas in 15.4.
@@ -96,7 +96,7 @@ Margins link Build to Flight: spare capacity buys event safety. Leftover budget 
 |---|---|---|---|---|
 | Lunar Ice Hunter (Moon) | 480 | 50 | Subsurface, Composition | Lunar Polar |
 | Red Planet Climate Watch (Mars) | 700 | 60 | Imaging, Composition | Mars Orbit |
-| Wildfire Watch (Earth Observation) | 300 | 40 | Thermal, Imaging | LEO, Sun-Synchronous |
+| Wildfire Watch (Earth Observation) | 300 | 32 | Thermal, Imaging | LEO, Sun-Synchronous |
 | Asteroid Rendezvous | 600 | 55 | Composition, Topography | Asteroid Rendezvous |
 
 Difficulty order: Wildfire Watch → Lunar Ice Hunter → Asteroid Rendezvous → Red Planet Climate Watch. MVP: first two only.
@@ -249,7 +249,7 @@ Mode; selected Mission/Orbit/Rocket/Bus/Power/Comms/Propulsion cards; Instrument
 | ID | Rule | Failure output |
 |---|---|---|
 | LV-01 | Exactly one of each required core card | list missing slots |
-| LV-02 | Instrument/Support counts fit Bus | name exceeded slot type |
+| LV-02 | At least 2 instruments and 1 support; counts must fit Bus slots; no duplicate instrument or support IDs | list missing, excess, or duplicate cards |
 | LV-03 | ≥1 priority-tag instrument | recommend compatible tags |
 | LV-04 | Orbit allowed by Mission | block |
 | LV-05 | Cost ≤ cap | show overrun |
@@ -284,6 +284,8 @@ Eight negative MVP events; no Dust Storm; seeded shuffle; draw without replaceme
     Spend Contingency: needs ≥10 in fund; costs 10; +1; max 2 per event. All response bonuses capped +2.
     Throttle Data: Comms events only; stage science ×0.5; +1. Cruise: bonus allowed, no science penalty (Cruise earns none).
     UI disables illegal responses.
+
+**P7 G3 — Cruise free practice:** Safe Mode and Throttle Data remain legal during Cruise. Because Cruise collects no science, their science penalties have no effect during that stage. The UI should display a "free practice" hint. This is an approved mechanics requirement; frontend implementation remains with its assigned owner.
 
 15.11 Event resolution
 Total = d6 + Margin + Tag + Response (cap +2). Final Difficulty = base + orbit modifier (Solar Storm: radiation 1/2/3 → +0/+1/+2). Tag +2 requires installed, functioning counter-tag card. Success ≥ Diff; Partial = Diff−1; Fail ≤ Diff−2. Log event ID, stage, roll, checked margin, all bonuses, responses/costs, difficulty, total, outcome, effects, Learning Moment.
@@ -393,6 +395,11 @@ Reject missing/unknown/malformed/disallowed-duplicate IDs. No division by zero. 
     Pre-insertion ΔV loss below requirement → Mission Lost.
     Same build + responses + seed → identical full run.
     Plus runbook edges: margin-discipline at 9.9/10/25/26/50/75%; deck never repeats.
+    1 instrument → LV-02 blocks launch.
+    0 supports → LV-02 blocks launch.
+    Duplicate instrument ID → LV-02 blocks launch.
+    Duplicate support ID → LV-02 blocks launch.
+    Wildfire Watch science target = 32.
 
 15.22 Outside MVP
 No orbital propagation/physics, real-time movement, multiplayer/accounts/saves/leaderboards, Mars/Asteroid missions, lifetime sim, Draft/Challenge/badges/positives, AI-generated scoring, exact real-vehicle performance.
@@ -403,6 +410,13 @@ Emergency cut: miss mid-sprint checkpoint → Wildfire Watch only, polished.
 17. Patch Records
 v7.1 (approved): P1 Navigation Error removed (8+2 base; MVP 8 negatives). P2 insertion failure = Mission Lost. P3 margin formula (superseded by A1). P4 positives = auto-successes; zero events → 20. P5 science-gate (superseded by A2). P6 multipliers 1.0/0.75/0.5/0.
 v7.2 (this merge): A1 Margin Discipline — negative clamp + decay to zero at 75% (was 50%); recommended-adopt, pending Mechanics ack. A2 science-below-target = Failed (was Partial cap); recommended-adopt, pending ack. A3 contract = 15.18 (adopted; nothing built on old list). Also adopted from sim spec: ΔV margin ratios, active-instrument science recalc, final-fund Budget Efficiency, effect taxonomy, seeded reproducibility, edge rules, 15.21 tests.
+v7.3 (P7 approved decisions):
+- A1/A2: ACKED by Game Mechanics owner.
+- G1: Minimum 2 instruments and 1 support, subject to Bus slot limits.
+- G2: Duplicate instrument and support cards prohibited.
+- G3: Safe Mode and Throttle Data remain legal during Cruise; UI displays "free practice" hint.
+- G4: Wildfire Watch science target reduced from 40 to 32.
+- G5: OPEN — Light Lifter capacity remains 1,500 kg until a final decision.
 18. Build Plan
 Tracks (claim, don't assign): 1 Mechanics & card data (+art normalization); 2 Frontend A (Build screen); 3 Frontend B (Flight+Report); 4 Simulation & state; 5 Visuals & pitch.
 Mid-sprint checkpoint: full Wildfire Watch on live URL; miss → emergency cut. 30-min outsider playtest; confusion + difficulty constants only. T−3h freeze (bugs + balance only; unready art stays placeholder). T−2h submission block (demo, links, incognito check, submit early).
