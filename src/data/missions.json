@@ -1,0 +1,28 @@
+[
+  {
+    "id": "mission_wildfire_watch",
+    "type": "mission",
+    "name": "Wildfire Watch",
+    "cost": 0,
+    "mass": 0,
+    "budgetCap": 300,
+    "scienceTarget": 40,
+    "priorityTags": ["Thermal", "Imaging"],
+    "allowedOrbits": ["orbit_leo", "orbit_sso"],
+    "flavor": "Monitor active wildfires and thermal hotspots from orbit to protect communities.",
+    "inspiredBy": "Earth observation satellites and wildfire thermal mapping missions"
+  },
+  {
+    "id": "mission_lunar_ice_hunter",
+    "type": "mission",
+    "name": "Lunar Ice Hunter",
+    "cost": 0,
+    "mass": 0,
+    "budgetCap": 480,
+    "scienceTarget": 50,
+    "priorityTags": ["Subsurface", "Composition"],
+    "allowedOrbits": ["orbit_lunar_polar"],
+    "flavor": "Search for water ice trapped in permanently shadowed craters at the lunar poles.",
+    "inspiredBy": "Lunar reconnaissance and polar prospecting missions"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bus_small",
+    "type": "bus",
+    "name": "Small Bus",
+    "cost": 40,
+    "mass": 150,
+    "power": 50,
+    "instrumentSlots": 2,
+    "supportSlots": 1,
+    "flavor": "Compact satellite chassis suited for focused, minimalist science missions.",
+    "inspiredBy": "SmallSat standard buses"
+  },
+  {
+    "id": "bus_medium",
+    "type": "bus",
+    "name": "Medium Bus",
+    "cost": 80,
+    "mass": 300,
+    "power": 80,
+    "instrumentSlots": 3,
+    "supportSlots": 2,
+    "flavor": "Balanced satellite platform accommodating multiple scientific payloads.",
+    "inspiredBy": "Standard planetary orbiter bus"
+  },
+  {
+    "id": "bus_large",
+    "type": "bus",
+    "name": "Large Bus",
+    "cost": 150,
+    "mass": 600,
+    "power": 150,
+    "instrumentSlots": 4,
+    "supportSlots": 3,
+    "flavor": "Flagship-class bus with extensive payload volume and power routing.",
+    "inspiredBy": "Flagship planetary mission spacecraft buses"
+  }
+]

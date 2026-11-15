@@ -1,0 +1,44 @@
+[
+  {
+    "id": "orbit_leo",
+    "type": "orbit",
+    "name": "Low Earth Orbit",
+    "cost": 0,
+    "mass": 0,
+    "reachFactor": 1.0,
+    "sunFactor": 1.0,
+    "signalFactor": 1.0,
+    "minDeltaV": 200,
+    "radiation": 1,
+    "flavor": "A close orbit around Earth offering low launch demand and strong comms.",
+    "inspiredBy": "Standard Low Earth Orbit"
+  },
+  {
+    "id": "orbit_sso",
+    "type": "orbit",
+    "name": "Sun-Synchronous",
+    "cost": 0,
+    "mass": 0,
+    "reachFactor": 0.85,
+    "sunFactor": 1.0,
+    "signalFactor": 1.0,
+    "minDeltaV": 300,
+    "radiation": 1,
+    "flavor": "A polar orbit that crosses the equator at the same local solar time each day.",
+    "inspiredBy": "Landsat and Earth-observing constellations"
+  },
+  {
+    "id": "orbit_lunar_polar",
+    "type": "orbit",
+    "name": "Lunar Polar",
+    "cost": 0,
+    "mass": 0,
+    "reachFactor": 0.35,
+    "sunFactor": 1.0,
+    "signalFactor": 0.8,
+    "minDeltaV": 1500,
+    "radiation": 2,
+    "flavor": "Orbits over the lunar poles to survey shadowed craters and ice deposits.",
+    "inspiredBy": "Lunar Reconnaissance Orbiter (LRO)"
+  }
+]

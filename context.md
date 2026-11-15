@@ -17,7 +17,7 @@ Students who rarely get to experiment with a whole mission from concept to opera
 
 ## Output Rules (from user)
 - Give only the idea, nothing more.
-- Provide an updated `context.md` after every reply.
+- Provide ONLY THE CHANGED SECTIONS of `context.md` after every reply (delta, not the full file). Full file lives locally at repo root.
 - All replies and files are in English only.
 
 ## DECISION: We are going with Idea 1 only
@@ -359,6 +359,9 @@ buildReport(state)       -> helped[], hurt[], whatIf[]
 
 Pure TypeScript, zero React imports. Every public result includes player-facing explanation strings; frontend never recreates rules.
 15.19 Data format examples
+- Event id is `event_comms_blackout` (asset filenames are authoritative; the older `event_communications_blackout` spelling is void).
+- `contingency_loss.value` is a FRACTION OF BUDGET CAP (0.05 / 0.10), not an absolute amount.
+- Effects may carry `condition: 'if_unpaid'` (Budget Cut fail) and `target: 'random_active' | 'most_expensive_active'`.
 
 json
 { "id": "instr_radar_sounder", "type": "instrument", "name": "Radar Sounder",
@@ -428,23 +431,34 @@ Keep starter numbers; inspiredBy per card + README Sources + demo line: "Rules m
     Fast-model prompt template: role → context (reference) → HARD SCOPE FENCE → numbered tasks w/ exact contents → DO NOT ADD → verification w/ real output → short report → STOP. Save as prompts/stepN.md.
 
 22. Asset Integration Protocol
-Placeholder-first; engine has zero asset deps. Drop-point public/assets/{cards,icons,bg,ui}/, filenames = ids (required-assets.md + JSON). <CardArt>/<Icon> fall back to type-color placeholders (gold/blue/orange/teal/purple/magenta); real PNGs appear with zero code changes. DOM UI, image-rendering: pixelated, integer scaling, 16:9 letterbox. Wireframes before art. Designer triage: event_navigation_error REMOVED — do not draw; mode-select trio → P2; P1 order style→frames→icons→build screen; reuse base shapes. Normalization ~20 min (sizes, ≤32-color palette, transparent PNG, nearest-neighbor); inconsistent → placeholder stays. T−3h: unready art stays placeholder. Step 0 palette tokens in index.css are placeholders; designer's final palette replaces values only.
+Asset pack DELIVERED (everything except the 50 card illustrations). Keep the designer's folder names verbatim; do not rename (their `source/` scripts depend on them).
+- Drop-point: `public/assets/{backgrounds,cards,icons,build,flight,report,general,fx,audio,palette}/`.
+- **`tools/` and `source/` stay at repo root, NOT in `public/`** — never ship Python to the static site.
+- **Card rendering = DOM composite:** illustration `<img>` at offset x4,y13 (56×48) with the frame `<img>` overlaid on top (frame art window is a transparent hole). No offline compositing, no build step. `tools/compose_cards.py` is optional/offline only.
+- **Ignore all baked-in text** in assets (placeholder 5×7 bitmap font). Render every label in DOM with Silkscreen (OFL, already loaded).
+- Corrected sizes: response buttons 80×24 (2-line labels), report buttons 96×24, slots 64×96.
+- `<CardArt>` / `<Icon>` still fall back to type-color placeholders (gold/blue/orange/teal/purple/magenta) — the 50 illustrations are still missing, so fallback stays active for card art.
+- Pixel rules unchanged: `image-rendering: pixelated`, integer scaling only, native 480×270 stage, letterbox.
+- Audio (9 SFX + 2 loops, 22 kHz mono WAV) delivered but stays P2: wire only after Step 6, muted by default.
+- Designer triage still stands: `event_navigation_error` REMOVED — do not draw. Mode-select trio P2 (Learning-only MVP).
+
 23. Parallel Build Runbook
 
     Step 0 — DONE. Scaffold + Tailwind v4 + Vitest + folders + netlify.toml deployed: https://darling-crisp-b1fb7f.netlify.app/ . Tag step-0.
-    Step 1 — Contract commit (next, Engine, ~30 min): types.ts modeling 15.7 state, 15.12 effects, 15.18 signatures; stubs; 15.21 tests written RED; src/data/*.json with 15.19 schemas (events include allowedResponses/effects/learningMoment). Attach canonical v13. DONE: npm test runs, tests red.
-    Step 2 — Placeholder art system (Frontend A, 30 min): CardArt/Icon/CardView/Gauge, type-color fallbacks, pixelated scaling, tier shape symbols. DONE: drop-in PNG works with zero code changes.
-    Step 3 — Build screen (Frontend A, 60–90 min): mission pick → slots → 6-tab catalog → click-to-place → gauges via calculateBuild/validateBuild → Launch Check LV-01…08 → Launch disabled until valid. DONE: §14 build assembles; gauges match exactly.
+    Step 1 — Contract commit (Engine, prompt issued): types.ts (full domain contract), 10 JSON data files (2 missions, 3 orbits, 4 rockets, 3 buses, 4 power, 3 comms, 3 propulsion, 4 supports, 8 instruments, 8 events), data/index.ts loaders, rng.ts (mulberry32 + shuffle, implemented), engine.ts (10 stubs that throw), fixtures.ts (LUNAR_BUILD), engine.test.ts (12 acceptance tests). DONE: npm run build green, smoke test green, ALL engine tests RED with NotImplemented. Data transcription folded into Step 1 so Steps 2/3/5 unblock immediately.
+    Step 2 — Art system (Frontend A): CardArt (frame+illustration DOM composite), Icon, CardView, Gauge; real folder paths per Section 22; DOM text only; tier shape symbols; placeholder fallback for missing illustrations. DONE: a real PNG appears with zero code changes.
+    Step 3 — Build screen (Frontend A): Layout decision — TABBED SLOT GROUPS, because 9 slots + panels do not fit 480×270 at once. Tabs: (1) Mission/Orbit/Rocket, (2) Spacecraft (bus/power/comms/propulsion), (3) Payload (instruments + supports). Cards stay 64×96 at ×1 native; whole stage integer-scaled. Gauges + Launch Check always visible. Click-to-place, no drag-and-drop. DONE: §14 build assembles; gauges match exactly.
     Step 4 — Full engine (Engine, parallel): implement 15.4–15.17 in order; mulberry32 seeded RNG. DONE: 15.21 green incl. headless end-to-end Wildfire Watch.
     Step 5 — Flight + Report (Frontend B, parallel): mock RunLog first; stage tracker, event reveal, odds via getEventPreview, response buttons with legality states, instrument strip, science counter, Learning Moment; report breakdown, rank, helped/hurt/what-if, Replay. DONE: complete on mocks; engine swap = one import.
     Step 6 — Integration gate: full Wildfire Watch on live URL; replay twice, no state corruption; miss → emergency cut; then playtest.
-    Step 7 — Asset drop-in (continuous, Data).
+    Step 7 — Asset drop-in: pack already delivered. Remaining: 50 card illustrations only; normalize + drop into public/assets/cards/. Unready at T−3h stays placeholder.
     Step 8 — Freeze T−3h; submit T−2h.
 
 Open Decisions
 
-    A1/A2 one-word ack from Mechanics owner (blocking Step 1 freeze, defaults applied).
-    Working project title + team name (logo + demo).
+    A1/A2 Mechanics-owner ack still pending (defaults applied).
+    Working project title + team name (logo asset still uses placeholder name).
+    Tabbed-slot-group layout: UI/UX confirms at Step 3 kickoff.
     Decision C final ack.
     Official page check → pitch track.
 
@@ -471,3 +485,4 @@ Change Log
     v11: parallel runbook (8 steps, gates).
     v12: Step 0 prompt; tooling pinned; fast-model prompt template.
     v13: Step 0 done + live URL recorded. Merged Simulation owner's Section 15 fork (their "v8", based on pre-patch v7) into canonical: full 15.1–15.22 adopted; contract = 15.18 (A3); event schema = 15.19; v7.2 amendments A1 (margin clamp + 75% decay) and A2 (science-below-target = Failed) applied as recommended defaults pending Mechanics ack; Sections 9–11 updated to match; canonical-file rule added; Step 1 now targets 15.7/15.12/15.18/15.19/15.21. Their file archived to docs/archive/.
+    v14: Output rule changed to delta-only context updates. Asset pack delivered and integrated: real folder names kept under public/assets, tools/source excluded from deploy, DOM frame+illustration compositing, baked text ignored, button sizes corrected, audio P2. Event id standardized to event_comms_blackout; contingency_loss documented as fraction-of-cap; effect condition/target fields added. Step 1 prompt issued and expanded to include full card-data transcription; Step 3 layout resolved as tabbed slot groups (9 slots do not fit 480×270).

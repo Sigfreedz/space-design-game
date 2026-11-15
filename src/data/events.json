@@ -1,0 +1,218 @@
+[
+  {
+    "id": "event_solar_storm",
+    "type": "event",
+    "name": "Solar Storm",
+    "checks": "power",
+    "counterTag": "Radiation-Hardened",
+    "baseDifficulty": 4,
+    "allowedResponses": ["safe_mode", "spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "science_multiplier",
+          "value": 0.75,
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "instrument_offline",
+          "target": "random_active",
+          "duration": 2
+        }
+      ]
+    },
+    "learningMoment": "Intense solar energetic particle events can induce current spikes and blind optical sensors, requiring protective shielding and safe-mode maneuvers."
+  },
+  {
+    "id": "event_comms_blackout",
+    "type": "event",
+    "name": "Communications Blackout",
+    "checks": "data",
+    "counterTag": "Storage",
+    "baseDifficulty": 4,
+    "allowedResponses": ["throttle_data", "spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "science_multiplier",
+          "value": 0.5,
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "science_multiplier",
+          "value": 0,
+          "duration": 1
+        }
+      ]
+    },
+    "learningMoment": "Spacecraft may store data onboard when a communication link is unavailable and transmit it later."
+  },
+  {
+    "id": "event_instrument_fault",
+    "type": "event",
+    "name": "Instrument Fault",
+    "checks": "cost",
+    "counterTag": "Redundant",
+    "baseDifficulty": 5,
+    "allowedResponses": ["spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "instrument_offline",
+          "target": "random_active",
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "instrument_lost",
+          "target": "random_active"
+        }
+      ]
+    },
+    "learningMoment": "Extreme thermal cycling and radiation exposure in deep space can degrade component electronics unless redundant systems are present."
+  },
+  {
+    "id": "event_thruster_glitch",
+    "type": "event",
+    "name": "Thruster Glitch",
+    "checks": "deltaV",
+    "counterTag": null,
+    "baseDifficulty": 4,
+    "allowedResponses": ["spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "delta_v_loss",
+          "value": 300
+        }
+      ],
+      "fail": [
+        {
+          "type": "delta_v_loss",
+          "value": 700
+        }
+      ]
+    },
+    "learningMoment": "Propellant line valve stickiness or pressurant irregularities can cause thruster underburns, consuming extra delta-v reserve."
+  },
+  {
+    "id": "event_budget_cut",
+    "type": "event",
+    "name": "Budget Cut",
+    "checks": "cost",
+    "counterTag": null,
+    "baseDifficulty": 5,
+    "allowedResponses": ["spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "contingency_loss",
+          "value": 0.05
+        }
+      ],
+      "fail": [
+        {
+          "type": "contingency_loss",
+          "value": 0.1
+        },
+        {
+          "type": "instrument_offline",
+          "target": "most_expensive_active",
+          "duration": 1,
+          "condition": "if_unpaid"
+        }
+      ]
+    },
+    "learningMoment": "Mission operations face funding reallocations; maintaining adequate contingency reserves ensures all payload instruments stay operational."
+  },
+  {
+    "id": "event_micrometeoroid",
+    "type": "event",
+    "name": "Micrometeoroid Strike",
+    "checks": "mass",
+    "counterTag": "Radiation-Hardened",
+    "baseDifficulty": 5,
+    "allowedResponses": ["spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "instrument_offline",
+          "target": "random_active",
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "instrument_lost",
+          "target": "random_active"
+        }
+      ]
+    },
+    "learningMoment": "Hypervelocity interplanetary dust strikes can puncture unshielded assemblies; structural shielding mass absorbs the impact energy."
+  },
+  {
+    "id": "event_thermal_overheat",
+    "type": "event",
+    "name": "Thermal Overheat",
+    "checks": "power",
+    "counterTag": "Thermal",
+    "baseDifficulty": 4,
+    "allowedResponses": ["safe_mode", "spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "science_multiplier",
+          "value": 0.75,
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "instrument_offline",
+          "target": "random_active",
+          "duration": 2
+        }
+      ]
+    },
+    "learningMoment": "Unfavorable sun aspect angles cause internal payload components to exceed thermal limits, requiring active cooling or load shedding."
+  },
+  {
+    "id": "event_software_bug",
+    "type": "event",
+    "name": "Software Bug",
+    "checks": "cost",
+    "counterTag": "Redundant",
+    "baseDifficulty": 3,
+    "allowedResponses": ["spend_contingency"],
+    "effects": {
+      "success": [],
+      "partial": [
+        {
+          "type": "science_multiplier",
+          "value": 0.75,
+          "duration": 1
+        }
+      ],
+      "fail": [
+        {
+          "type": "science_multiplier",
+          "value": 0,
+          "duration": 1
+        }
+      ]
+    },
+    "learningMoment": "Flight software race conditions or memory leaks can corrupt instrument telemetry until ground teams upload a verified software patch."
+  }
+]

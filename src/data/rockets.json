@@ -1,0 +1,46 @@
+[
+  {
+    "id": "rocket_light",
+    "type": "rocket",
+    "name": "Light Lifter",
+    "cost": 60,
+    "mass": 0,
+    "capacityLEO": 1500,
+    "reliability": 0.85,
+    "flavor": "Affordable small-payload launcher designed for quick, lightweight deployments.",
+    "inspiredBy": "Electron and light commercial launchers"
+  },
+  {
+    "id": "rocket_medium",
+    "type": "rocket",
+    "name": "Medium Lifter",
+    "cost": 150,
+    "mass": 0,
+    "capacityLEO": 3000,
+    "reliability": 0.92,
+    "flavor": "Workhorse rocket providing dependable lift for scientific spacecraft.",
+    "inspiredBy": "Delta II and medium launch vehicles"
+  },
+  {
+    "id": "rocket_heavy",
+    "type": "rocket",
+    "name": "Heavy Lifter",
+    "cost": 300,
+    "mass": 0,
+    "capacityLEO": 10000,
+    "reliability": 0.96,
+    "flavor": "High-capacity launcher capable of sending large payloads to deep orbits.",
+    "inspiredBy": "Falcon Heavy and Atlas V heavy configurations"
+  },
+  {
+    "id": "rocket_super_heavy",
+    "type": "rocket",
+    "name": "Super Heavy Lifter",
+    "cost": 500,
+    "mass": 0,
+    "capacityLEO": 30000,
+    "reliability": 0.98,
+    "flavor": "Massive launch system built for humanity's heaviest exploratory hardware.",
+    "inspiredBy": "Space Launch System (SLS) and Saturn V"
+  }
+]

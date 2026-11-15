@@ -1,0 +1,35 @@
+[
+  {
+    "id": "comms_small",
+    "type": "comms",
+    "name": "Small Antenna",
+    "cost": 8,
+    "mass": 10,
+    "power": 20,
+    "downlink": 5,
+    "flavor": "Low-gain patch antenna system for essential telemetry and low data rates.",
+    "inspiredBy": "Omnidirectional and patch antennas"
+  },
+  {
+    "id": "comms_medium",
+    "type": "comms",
+    "name": "Medium Antenna",
+    "cost": 20,
+    "mass": 30,
+    "power": 60,
+    "downlink": 25,
+    "flavor": "Steerable medium-gain antenna capable of moderate science bandwidth.",
+    "inspiredBy": "Horn and medium parabolic antennas"
+  },
+  {
+    "id": "comms_large",
+    "type": "comms",
+    "name": "Large Dish",
+    "cost": 45,
+    "mass": 80,
+    "power": 150,
+    "downlink": 100,
+    "flavor": "High-gain parabolic reflector dish maximizing science return over deep space.",
+    "inspiredBy": "High-Gain Antennas (HGA) on deep space probes"
+  }
+]

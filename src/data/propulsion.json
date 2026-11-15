@@ -1,0 +1,35 @@
+[
+  {
+    "id": "prop_chem_small",
+    "type": "propulsion",
+    "name": "Chemical Small",
+    "cost": 20,
+    "mass": 60,
+    "power": 0,
+    "deltaV": 1000,
+    "flavor": "Simple monopropellant thruster system for attitude control and minor burns.",
+    "inspiredBy": "Hydrazine monopropellant systems"
+  },
+  {
+    "id": "prop_chem_large",
+    "type": "propulsion",
+    "name": "Chemical Large",
+    "cost": 40,
+    "mass": 150,
+    "power": 0,
+    "deltaV": 2000,
+    "flavor": "Bipropellant propulsion module built for large orbital insertion burns.",
+    "inspiredBy": "Bipropellant apogee engines"
+  },
+  {
+    "id": "prop_ion",
+    "type": "propulsion",
+    "name": "Ion Drive",
+    "cost": 70,
+    "mass": 90,
+    "power": 150,
+    "deltaV": 4000,
+    "flavor": "High-efficiency electric propulsion providing immense delta-v over time.",
+    "inspiredBy": "NSTAR ion thruster on Dawn"
+  }
+]

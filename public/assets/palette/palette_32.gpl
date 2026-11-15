@@ -1,0 +1,36 @@
+GIMP Palette
+Name: Mission32
+Columns: 8
+#
+ 11  13  31	ink
+ 20  26  58	navy1
+ 31  42  92	navy2
+ 47  63 138	navy3
+ 90  95 168	peri
+142 160 208	lav
+255 255 255	white
+232 240 255	ice
+185 200 230	mist
+127 200 255	cyan
+ 27  79 156	blue_d
+ 45 121 209	blue
+ 90 165 232	blue_l
+ 47 122  58	green_d
+ 79 168  74	green
+134 207  90	green_l
+ 42  42  58	g0
+ 74  77  88	g1
+107 111 122	g2
+141 145 156	g3
+180 184 194	g4
+214 217 224	g5
+217  74  74	red
+224 122  95	salmon
+242 166  90	orange
+255 210 122	gold
+255 233 168	pale
+ 42 167 160	teal
+138  95 208	purple
+210  79 168	magenta
+122  42  58	maroon
+154  74  30	rust

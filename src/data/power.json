@@ -1,0 +1,50 @@
+[
+  {
+    "id": "power_solar_s",
+    "type": "power",
+    "name": "Solar Array S",
+    "cost": 10,
+    "mass": 30,
+    "output": 200,
+    "source": "solar",
+    "tags": [],
+    "flavor": "Compact deployable photovoltaic panels for basic power generation.",
+    "inspiredBy": "Deployable SmallSat solar arrays"
+  },
+  {
+    "id": "power_solar_l",
+    "type": "power",
+    "name": "Solar Array L",
+    "cost": 25,
+    "mass": 80,
+    "output": 600,
+    "source": "solar",
+    "tags": [],
+    "flavor": "Generous solar wings providing robust energy in inner planetary environments.",
+    "inspiredBy": "Mars and lunar orbiter solar arrays"
+  },
+  {
+    "id": "power_solar_xl",
+    "type": "power",
+    "name": "Solar Array XL",
+    "cost": 45,
+    "mass": 140,
+    "output": 1000,
+    "source": "solar",
+    "tags": [],
+    "flavor": "High-area solar wings delivering maximum electricity in sunlit space.",
+    "inspiredBy": "UltraFlex and large orbital solar arrays"
+  },
+  {
+    "id": "power_rtg",
+    "type": "power",
+    "name": "RTG",
+    "cost": 90,
+    "mass": 45,
+    "output": 150,
+    "source": "rtg",
+    "tags": ["Radiation-Hardened"],
+    "flavor": "Radioisotope thermoelectric generator providing reliable power independent of sunlight.",
+    "inspiredBy": "Multi-Mission Radioisotope Thermoelectric Generator (MMRTG)"
+  }
+]
