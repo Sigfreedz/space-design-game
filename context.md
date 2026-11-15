@@ -4,8 +4,8 @@
 - **Event:** NASA Space Apps Challenge 2026 (hackathon, Nov 14–15, 2026)
 - **Team size:** 5
 - **Deliverable:** Web-based game
-- **Current stage:** Implementation sprint (final day). Mechanics v7.1 frozen. Art in production (pixel art). Executing Section 23 runbook: **Step 0 prompt issued (scaffold + deploy)**; Steps 1–8 pending.
-- **Live URL:** (https://6af93295813066ddba03d10e--darling-crisp-b1fb7f.netlify.app/)
+- **Current stage:** Implementation sprint (final day). Mechanics v7.1 frozen. Art in production (pixel art). Executing Section 23 runbook: **Step 0 complete (scaffold + deploy live)**; Ready for Step 1.
+- **Live URL:** https://6af93295813066ddba03d10e--darling-crisp-b1fb7f.netlify.app/
 
 ## Challenge Statement
 Create an interactive game where players design, manage, and simulate a complete space mission. Players make engineering decisions, manage limited resources, and see how each choice affects mission success. Trade-offs to cover: mission objectives, spacecraft design, science instruments, launch vehicles, budget, power, mass, communications, orbital constraints.
