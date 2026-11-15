@@ -4,7 +4,7 @@ A single-player, card-based space mission design game built for the NASA Space A
 
 ## NASA Space Apps Challenge 2026
 
-Live demo: https://6af93295813066ddba03d10e--darling-crisp-b1fb7f.netlify.app/
+Live demo: https://darling-crisp-b1fb7f.netlify.app/
 
 Game rules and scope: see context.md.
 
