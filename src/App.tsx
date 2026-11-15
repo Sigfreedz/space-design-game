@@ -28,10 +28,22 @@ const tabs: Array<{ id: Tab; label: string; slots: string }> = [
   { id: 'payload', label: 'PAYLOAD', slots: 'Instruments · Supports' },
 ]
 
-const catalogByTab: Record<Tab, Card[]> = {
-  mission: [...missions, ...orbits, ...rockets],
-  spacecraft: [...buses, ...power, ...comms, ...propulsion],
-  payload: [...instruments, ...supports],
+const catalogGroups: Record<Tab, Array<{ label: string; cards: Card[] }>> = {
+  mission: [
+    { label: 'MISSION CARDS', cards: missions },
+    { label: 'ORBIT CARDS', cards: orbits },
+    { label: 'LIFTERS', cards: rockets },
+  ],
+  spacecraft: [
+    { label: 'BUS', cards: buses },
+    { label: 'POWER', cards: power },
+    { label: 'COMMUNICATIONS', cards: comms },
+    { label: 'PROPULSION', cards: propulsion },
+  ],
+  payload: [
+    { label: 'INSTRUMENTS', cards: instruments },
+    { label: 'SUPPORT SYSTEMS', cards: supports },
+  ],
 }
 
 const slotForType: Partial<Record<CardType, SingleSlot>> = {
@@ -184,22 +196,29 @@ function App() {
                 </button>
               ))}
             </div>
-            <div className="catalog-grid">
-              {catalogByTab[activeTab].map((card) => {
-                const selected = cardIsSelected(build, card)
-                const overCapacity =
-                  (card.type === 'instrument' && !selected && !!selectedBus && build.instrumentIds.length >= selectedBus.instrumentSlots) ||
-                  (card.type === 'support' && !selected && !!selectedBus && build.supportIds.length >= selectedBus.supportSlots)
-                return (
-                  <CardView
-                    key={card.id}
-                    card={card}
-                    selected={selected}
-                    disabled={overCapacity}
-                    onClick={() => chooseCard(card)}
-                  />
-                )
-              })}
+            <div className="catalog-groups">
+              {catalogGroups[activeTab].map((group) => (
+                <section className="catalog-group" key={group.label}>
+                  <h2 className="catalog-group__title">{group.label}</h2>
+                  <div className="catalog-grid">
+                    {group.cards.map((card) => {
+                      const selected = cardIsSelected(build, card)
+                      const overCapacity =
+                        (card.type === 'instrument' && !selected && !!selectedBus && build.instrumentIds.length >= selectedBus.instrumentSlots) ||
+                        (card.type === 'support' && !selected && !!selectedBus && build.supportIds.length >= selectedBus.supportSlots)
+                      return (
+                        <CardView
+                          key={card.id}
+                          card={card}
+                          selected={selected}
+                          disabled={overCapacity}
+                          onClick={() => chooseCard(card)}
+                        />
+                      )
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           </section>
 
