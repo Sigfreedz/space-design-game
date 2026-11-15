@@ -17,6 +17,7 @@ import { CardView } from './components/card-view.tsx'
 import { Gauge } from './components/gauge.tsx'
 import { FlightScreen } from './screens/flight-screen.tsx'
 import { ReportScreen } from './screens/report-screen.tsx'
+import { useGameAudio } from './audio/use-game-audio.ts'
 
 type Tab = 'mission' | 'spacecraft' | 'payload'
 type SingleSlot = Exclude<keyof Build, 'instrumentIds' | 'supportIds'>
@@ -71,12 +72,15 @@ function App() {
   const [notice, setNotice] = useState('')
   const [missionState, setMissionState] = useState<MissionState | null>(null)
   const [screen, setScreen] = useState<'build' | 'flight' | 'report'>('build')
+  const { playSound, playMusic } = useGameAudio(screen)
 
   const validation = useMemo(() => validateBuild(build), [build])
   const calculated = validation.calculatedBuild
   const selectedBus = buses.find((card) => card.id === build.busId)
 
   function chooseCard(card: Card) {
+    playMusic('build')
+    playSound(cardIsSelected(build, card) ? 'card_pickup' : 'card_place')
     setNotice('')
     const slot = slotForType[card.type]
     if (slot) {
@@ -110,6 +114,8 @@ function App() {
 
   function startMission() {
     try {
+      playMusic('flight')
+      playSound('launch_rumble')
       const state = createMissionState(build, 'learning', Date.now())
       setMissionState(state)
       setScreen('flight')
@@ -139,11 +145,11 @@ function App() {
   }
 
   if (screen === 'flight' && missionState) {
-    return <FlightScreen state={missionState} onAdvance={advanceMission} />
+    return <FlightScreen state={missionState} onAdvance={advanceMission} onSound={playSound} />
   }
 
   if (screen === 'report' && missionState) {
-    return <ReportScreen state={missionState} onReplay={replayMission} onBackToBuild={() => setScreen('build')} />
+    return <ReportScreen state={missionState} onReplay={replayMission} onBackToBuild={() => setScreen('build')} onSound={playSound} />
   }
 
   return (
@@ -239,7 +245,10 @@ function App() {
                 type="button"
                 className="launch-button"
                 disabled={!validation.valid}
-                onClick={startMission}
+                onClick={() => {
+                  playSound('ui_click')
+                  startMission()
+                }}
               >
                 START MISSION
               </button>

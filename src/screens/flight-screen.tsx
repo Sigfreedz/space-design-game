@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { MissionState, PlayerResponse } from '../engine/types.ts'
 import { drawEvent, getEventPreview } from '../engine/engine.ts'
+import type { SoundName } from '../audio/use-game-audio.ts'
 
 type FlightScreenProps = {
   state: MissionState
   onAdvance: (responses: PlayerResponse[]) => void
+  onSound: (name: SoundName) => void
 }
 
 const stages = ['LAUNCH', 'CRUISE', 'INSERTION', 'SCIENCE 1', 'SCIENCE 2', 'SCIENCE 3']
@@ -13,7 +15,7 @@ function stageNeedsEvent(stage: number): boolean {
   return stage === 2 || stage >= 4
 }
 
-export function FlightScreen({ state, onAdvance }: FlightScreenProps) {
+export function FlightScreen({ state, onAdvance, onSound }: FlightScreenProps) {
   const pendingEvent = useMemo(() => {
     if (!stageNeedsEvent(state.stage) || state.status !== 'active') return null
     const event = drawEvent(state).event
@@ -22,6 +24,12 @@ export function FlightScreen({ state, onAdvance }: FlightScreenProps) {
 
   const activeInstrument = state.instruments.find((instrument) => instrument.status === 'active')
   const lastResult = state.stageLog[state.stageLog.length - 1]
+
+  useEffect(() => {
+    if (pendingEvent) onSound('event_alert')
+    if (lastResult?.stage === 1) onSound('ui_click')
+    if (lastResult?.stage === 3) onSound('ui_click')
+  }, [lastResult, onSound, pendingEvent])
 
   return (
     <main className="game-shell">

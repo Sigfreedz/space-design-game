@@ -1,9 +1,12 @@
+import { useEffect } from 'react'
 import type { MissionState } from '../engine/types.ts'
+import type { SoundName } from '../audio/use-game-audio.ts'
 
 type ReportScreenProps = {
   state: MissionState
   onReplay: () => void
   onBackToBuild: () => void
+  onSound: (name: SoundName) => void
 }
 
 const outcomeLabels = {
@@ -14,9 +17,16 @@ const outcomeLabels = {
   outstanding: 'OUTSTANDING MISSION',
 }
 
-export function ReportScreen({ state, onReplay, onBackToBuild }: ReportScreenProps) {
+export function ReportScreen({ state, onReplay, onBackToBuild, onSound }: ReportScreenProps) {
   const score = state.score
   const report = state.report
+
+  useEffect(() => {
+    if (score) {
+      onSound(score.outcome === 'mission_lost' || score.outcome === 'failed' ? 'fail_sound' : 'success_jingle')
+    }
+  }, [onSound, score])
+
   if (!score || !report) return null
 
   return (
